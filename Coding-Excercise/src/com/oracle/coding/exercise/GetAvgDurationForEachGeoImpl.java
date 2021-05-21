@@ -14,27 +14,32 @@ public class GetAvgDurationForEachGeoImpl implements GetAvgDurationForEachGeo {
 	public Map<String, Integer> getAvgBuildDuration(String inputString, List<TeamDetails> teamList) {
 
 		List<String[]> dataList = new ArrayList<>();
-		String regex = ",";
-		new BufferedReader(new StringReader(inputString)).lines().forEach((line) -> dataList.add(line.split(regex)));
 		Map<String, Integer> responseMap = new HashMap<>();
+		String regex = ",";
+		if (inputString != null) {
+			new BufferedReader(new StringReader(inputString)).lines()
+					.forEach((line) -> dataList.add(line.split(regex)));
 
-		int i;
-		int j = 0;
-		for (String[] stringLines : dataList) {
+			int i;
+			int j = 0;
+			for (String[] stringLines : dataList) {
 
-			String getString = "";
+				String getString = "";
 
-			getString = Arrays.asList(stringLines).get(5).substring(0,
-					Arrays.asList(stringLines).get(5).trim().length());
-			getString = getString.substring(0, getString.length()-1).trim();
-			i = Integer.parseInt(getString);
-			if (responseMap.containsKey(Arrays.asList(stringLines).get(2))) {
-				j++;
-				i += i / j;
+				getString = Arrays.asList(stringLines).get(5).substring(0,
+						Arrays.asList(stringLines).get(5).trim().length());
+				getString = getString.substring(0, getString.length() - 1).trim();
+				i = Integer.parseInt(getString);
+				if (responseMap.containsKey(Arrays.asList(stringLines).get(2))) {
+					j++;
+					i += i / j;
+				}
+				responseMap.put(Arrays.asList(stringLines).get(2), i);
 			}
-			responseMap.put(Arrays.asList(stringLines).get(2), i);
+			responseMap.forEach((k, v) -> System.out.println("geoZone >>==>" + k + ", avgDuration >>===>{" + v + "}"));
+		} else {
+			System.out.println("RequestData is Missing");
 		}
-		responseMap.forEach((k, v) -> System.out.println("geoZone >>==>" + k + ", avgDuration >>===>{" + v + "}"));
 
 		return responseMap;
 	}

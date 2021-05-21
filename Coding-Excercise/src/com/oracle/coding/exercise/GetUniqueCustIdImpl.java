@@ -12,18 +12,22 @@ public class GetUniqueCustIdImpl implements GetUniqueCustId {
 
 		Map<String, String> resultMap = new HashMap<>();
 
-		Set<Map.Entry<String, String>> entrySet = dataMap.entrySet();
-		Iterator<Map.Entry<String, String>> iterator = entrySet.iterator();
-		while (iterator.hasNext()) {
-			Map.Entry<String, String> entry = iterator.next();
-			String key = entry.getKey();
-			String value = entry.getValue();
+		if (dataMap != null) {
+			Set<Map.Entry<String, String>> entrySet = dataMap.entrySet();
+			Iterator<Map.Entry<String, String>> iterator = entrySet.iterator();
+			while (iterator.hasNext()) {
+				Map.Entry<String, String> entry = iterator.next();
+				String key = entry.getKey();
+				String value = entry.getValue();
 
-			if (resultMap.containsKey(value)) {
-				resultMap.put(value, resultMap.get(value) + " , " + key);
-			} else {
-				resultMap.put(value, key);
+				if (resultMap.containsKey(value)) {
+					resultMap.put(value, resultMap.get(value) + " , " + key);
+				} else {
+					resultMap.put(value, key);
+				}
 			}
+		} else {
+			System.out.println("Request datais missing");
 		}
 		return resultMap;
 	}
